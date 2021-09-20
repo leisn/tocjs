@@ -1,0 +1,192 @@
+*,
+::after,
+::before {
+    box-sizing: border-box;
+}
+
+html {
+    font-family: sans-serif;
+    line-height: 1.15;
+    text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    text-align: left;
+    background-color: #fff;
+}
+
+.container {
+    padding-left: 15px;
+    padding-right: 15px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+}
+
+.wrapper {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.content,
+.sidebar {
+    position: relative;
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+.content {
+    flex: 0 0 65%;
+    max-width: 65%;
+    padding-right: 0;
+}
+
+.sidebar {
+    flex: 0 0 35%;
+    max-width: 35%;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    margin-top: 0;
+    margin-bottom: .5rem;
+    font-weight: 500;
+    line-height: 1.2;
+    font-weight: 500;
+    padding-top: 20px;
+}
+
+h1 {
+    font-size: 2rem;
+}
+
+h2 {
+    font-size: 1.8rem;
+}
+
+h3 {
+    font-size: 1.5rem;
+}
+
+h4 {
+    font-size: 1.2rem;
+}
+
+h5 {
+    font-size: 1rem;
+}
+
+h6 {
+    font-size: .8rem;
+}
+
+code {
+    margin: 2px;
+    background-color: bisque;
+    padding: 2px 5px;
+    border-radius: 3px;
+    font-family: Consolas, SFMono-Regular, Menlo, Monaco, "Liberation Mono", "Courier New", monospace;
+}
+
+p {
+    margin-top: 0;
+    margin-bottom: 1rem;
+}
+
+.toc-title {
+    padding-left: 20px;
+    background-color: beige;
+    margin-bottom: 0;
+    padding-top: .8em;
+    ;
+}
+
+.toc {
+    padding-top: .5rem;
+    display: block;
+    background-color: beige;
+}
+
+.toc-list {
+    flex-direction: column;
+    padding-left: 1em;
+    list-style: none;
+    flex-wrap: nowrap;
+    margin: 0;
+}
+
+.toc>.toc-list {
+    padding-left: 0;
+}
+
+.toc-link {
+    display: block;
+    padding: 4px 20px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #777;
+    text-decoration: none;
+    background-color: transparent;
+}
+
+.toc-link:hover {
+    color: #03a7dd;
+    border-left: 2px solid #03a7dd;
+    border-bottom: 1px solid #03a7dd;
+    padding-left: 18px;
+    padding-bottom: 3px;
+}
+
+.chapter {
+    padding-right: 12px;
+}
+
+.anchor {
+    padding-left: .5em;
+    padding-right: 14px;
+    color: #03a7dd;
+    text-decoration: none;
+    cursor: pointer;
+    position: absolute;
+    right: 0;
+}
+
+.anchor:hover {
+    color: blueviolet;
+}
+
+.content .chapter {
+    font-size: 14px;
+    width: 6em;
+    color: gray;
+    display: inline-block;
+}
+
+.custom .content {
+    padding-right: .5em;
+}
+
+.sidebar .chapter {
+    padding-right: .5em;
+}
+
+.custom .toc-list {
+    padding-left: 0;
+}
+
+.custom .toc>.toc-list>li>.toc-list {
+    padding-left: 1em;
+    ;
+}

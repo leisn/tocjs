@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Toc.js-Custom Demo</title>
+    <link rel="stylesheet" type="text/css" href="./style.css" />
+</head>
+
+<body>
+    <div class="container">
+        <div>
+            <pre>
+                =============================================
+                ||                                         ||
+                ||   ==========   =========   =========    ||
+                ||       ||       ||     ||   ||           ||
+                ||       ||       ||     ||   ||           ||
+                ||       ||       ||     ||   ||           ||
+                ||       ||       ||     ||   ||           ||
+                ||       ||       =========   =========    ||
+                ||                                         ||
+                =============================================
+            </pre>
+        </div>
+        <div class="wrapper custom" role="main">
+            <div class="content">
+                <article class="toc-scope">
+                    <h1 id="heading-top">Article Headings in TOC</h1>
+                    <p>All the headings in this article should be place in TOC.</p>
+                    <h2 id="heading-1">heading-1 </h2>
+                    <h3 id="heading-1-1">heading-1-1</h3>
+                    <h2 id="heading-2">heading-2</h2>
+                    <h3 id="heading-2-1">heading-2-1</h3>
+                    <h3 id="heading-2-2">heading-2-2</h3>
+                    <h3 id="heading-2-3">heading-2-3</h3>
+                    <h2 id="heading-3">heading-3 </h2>
+                </article>
+                <hr />
+                <article class="notoc">
+                    <h1 id="nocare1">This Article's Heading Should Not in TOC</h1>
+                    <p>Because of we use <code>article.toc-scope</code> as selector to limit scope, so all of this article's heading should not in TOC, even the heading has a id attribute.</p>
+                    <h2 id="nocare2"> This not in TOC too.</h2>
+                    <h3 id="nocare3"> This not in TOC too.</h3>
+                </article>
+                <hr />
+                <article class="toc-scope">
+                    <h1 id="other-weird">Some other weird</h1>
+                    <h2>Without id should not in toc</h2>
+                    <p>Cause the heading don't has a id attribute,even though in toc scope, it won't be place in TOC.</p>
+                    <h2>Without id should not in toc</h2>
+                    <h2>Without id should not in toc</h2>
+                    <h2 id="r1">TTT</h2>
+                    <h3 id="r2">TTT</h3>
+                    <h4 id="r3">TTT</h4>
+                    <h5 id="r4">TTT</h5>
+                    <h6 id="r5">TTT</h6>
+                    <h5 id="r6">TTT</h5>
+                    <h4 id="r7">TTT</h4>
+                    <h3 id="r8">TTT</h3>
+                    <h2 id="r9">TTT</h2>
+
+                    <h6 id="l1">TTT</h6>
+                    <h5 id="l2">TTT</h5>
+                    <h4 id="l3">TTT</h4>
+                    <h3 id="l4">TTT</h3>
+                    <h2 id="l5">TTT</h2>
+                    <h2 id="l6">TTT</h2>
+                    <h3 id="l7">TTT</h3>
+                    <h4 id="l8">TTT</h4>
+                    <h5 id="l9">TTT</h5>
+                    <h6 id="l0">TTT</h6>
+
+                    <h2 id="x1">TTT</h2>
+                    <h6 id="x2">TTT</h6>
+                    <h3 id="x3">TTT</h3>
+                    <h5 id="x4">TTT</h5>
+                    <h3 id="x5">TTT</h3>
+                    <h6 id="x6">TTT</h6>
+                    <h2 id="x7">TTT</h2>
+                </article>
+            </div>
+            <div id="toc-container" class="sidebar">
+                <h5 class="toc-title">Overview</h5>
+            </div>
+            </main>
+        </div>
+        <script src="../dist/toc.js"></script>
+        <script>
+            tocjs.use({
+                TocTag: "nav",
+                TocId: "toc",
+                TocClass: "toc",
+                ulClass: "toc-list",
+                liClass: "toc-item",
+                aClass: "toc-link",
+                HeadingGenerator: (info, path) => {
+                    let id = info.Id;
+                    //ignore all headings no id
+                    if (!id) return;
+                    //any way want to change the title
+                    let title = info.Title || '';
+                    let chapter = path.join('.');
+
+                    let titleInToc = title;
+                    let titleInHead = `${title}<a class="anchor" href="#${id}">#</a>`;
+
+                    if (path.length > 1) { //add chapter when not chapter root
+                        titleInToc = `<span class="chapter">${chapter}</span>` + titleInToc;
+                        titleInHead = `<span class="chapter">§${chapter}</span>` + titleInHead;
+                    }
+
+                    return { Id: id, TitleInToc: titleInToc, TitleInHeading: titleInHead };
+                }
+            }).make('toc-container', 'article.toc-scope');
+        </script>
+</body>
+
+</html>

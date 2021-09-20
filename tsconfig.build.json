@@ -1,0 +1,23 @@
+{
+    "compilerOptions": {
+        "module": "es2015",
+        "target": "es2016",
+        "outDir": "dist/types",
+        "lib": ["ES5","ES6","DOM"],
+        "noImplicitAny": true,
+        "strict": true,
+        // "declaration": true,
+        // "declarationDir": "."
+    },
+    "include": [
+        "src/**/*.ts"
+    ],
+    "exclude": [
+        ".yarn/**/*",
+        "node_modules",
+        "**/*.spec.ts"
+    ],
+    "typedocOptions": {
+        "excludePrivate": true
+    }
+}

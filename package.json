@@ -1,0 +1,59 @@
+{
+  "packageManager": "yarn@3.0.2",
+  "name": "@leisn/tocjs",
+  "version": "0.1.0",
+  "description": "A browser side toc generator, by query headings",
+  "author": {
+    "name": "leisn",
+    "url": "https://leisn.com"
+  },
+  "license": "MIT",
+  "keywords": [
+    "markdown",
+    "toc",
+    "tocjs",
+    "toc-generator",
+    "browser",
+    "frontend "
+  ],
+  "homepage": "https://github.com/leisn/tocjs",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/leisn/tocjs.git"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
+  "devDependencies": {
+    "@rollup/plugin-typescript": "^8.2.5",
+    "@types/chai": "^4.2.21",
+    "@types/gulp": "^4.0.9",
+    "@types/mocha": "^9.0.0",
+    "@types/node": "^16.9.1",
+    "chai": "^4.3.4",
+    "del": "^6.0.0",
+    "gulp": "^4.0.2",
+    "mocha": "^9.1.1",
+    "rollup": "^2.56.3",
+    "rollup-plugin-terser": "^7.0.2",
+    "ts-node": "^10.2.1",
+    "tslib": "*",
+    "typescript": "~4.4.3"
+  },
+  "typings": "./dist/toc.d.ts",
+  "types": "./dist/toc.d.ts",
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/toc.js",
+  "jsdelivr": "./dist/toc.min.js",
+  "unpkg": "./dist/toc.min.js",
+  "scripts": {
+    "tsc": "tsc -b",
+    "test": "mocha --require ts-node/register  --harmony --reporter spec ./test/*.test.ts",
+    "build": "gulp"
+  },
+  "engines": {
+    "node": ">=12"
+  }
+}
