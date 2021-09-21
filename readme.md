@@ -7,24 +7,45 @@ Tocjs is a browser side toc generator, by query headings.
 ### Usage
 
 ```html
+<script src="https://cdn.jsdelivr.net/npm/@leisn/tocjs@0.1.0/dist/toc.min.js"></script>
+
+<script>
+    // containerId is where to place toc
+    tocjs.make('containerId');     
+</script>
+```
+
+### Sample
+```html
 <!DOCTYPE html>
 <html>
 <body>
     <div id="toc-container"></div>
-    <abbr class="toc-scope">
+    <article class="toc-scope">
         <h1 id="top-head">top head</h1>
-        ...other headings
-    </div>
+        <!-- ...other headings -->
+    </article>
 
-    <script src="../dist/toc.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@leisn/tocjs@0.1.0/dist/toc.min.js"></script>
     <script>
+        // with full options
         tocjs.use({
             TocTag: "nav",
             TocId: "toc",
             TocClass: "toc",
             ulClass: "toc-list",
             liClass: "toc-item",
-            aClass: "toc-link"
+            aClass: "toc-link",
+            // implements this to custom 
+            HeadingGenerator:(info,path) => { 
+                let id = info.Id;
+                let title = info.Title;
+                let element = info.Target;
+
+                //your code
+                
+                return {Id: id, TitleInToc: title, TitleInHeading: undefinded};
+            }
         }).make('toc-container', 'article.toc-scope');
     </script>
 </body>
@@ -33,60 +54,18 @@ Tocjs is a browser side toc generator, by query headings.
 
 ### Functions
 
-* __make(options?: string | object, cssSelector?: string): HTMLElement | void;__
-  
-    _return_: The generated toc element, `undefinded` if got an error.
-    
-    _throw_: When given a `containerId` but cannot find it.
-    
-    _options_: nullable
-    
-    * _typeof string_: `containerId`
-    
-    * _typeof object_: 
-    
-      ``` typescript
-      {
-          containerId:string,
-          cssSelector:string
-      }
-      ```
-    
-    _cssSelector_: nullable, string, query scope of headings, if defined will cover defined in `options`.
+* __make(containerId ?: string, cssSelector ?: string, callback ?: MakeCallBack): tocjs;__
 
-    e.g.
-    ``` typescript
-    // No arguments
-    var toc = make(); 
-     
-    //Place toc in special element
-    make('containerId'); 
-    // same as
-    make({containerId:'containerId'});
-    
-    // Query headings in all '.toc-scope' elements,then place toc in special element
-    make('containerId','.toc-scope');
-    // same as
-    make({
-        containerId:'containerId',
-        cssSelector:'.toc-scope'
-    });
-    // same as
-    make({containerId:'containerId', cssSelector:'whatever'},
-        '.toc-scope');
-    
-    // Just set query scope, return the generated toc element
-    var toc= make({cssSelector:'.toc-scope'});
-    // same as
-    var toc =make(null,'.toc-scope');
-    ```
-
+    _containerId_: `nullable`, the element id to place toc element, pass `undefined` if don't want to auto place.
+    _cssSelector_: `nullable`, special scope to search headings, use `querySelectorAll`, default `document`.
+    _callback_: `nullable`, callback after toc generated, params `(tocElement, tocOptions)`, you can do someting with toc element, __notice__ if _containerId_ was given the toc element already added in container.
+    _return_:  `tocjs`
 
 * __use(options: TocOptions): tocjs;__
 
     _return_: `tocjs`
-  
-    _options_:
+    _options_: `not null`
+
     ```typescript
     interface TocOptions {
         TocTag: string;  // default 'nav', not null, Tag of generated toc element.
@@ -103,10 +82,16 @@ Tocjs is a browser side toc generator, by query headings.
     ```
 
     _`HeadingGenerator?(headingInfo: HeadingInfo, Path: number[]): GenerateResult | undefined;`_:
-    
+
+    > by default: 
+    >
+    > 1. If heading have id, always palace in toc, if no title use id as title, and not change title in heading.
+    > 2. If heading have no id but title , generate id with the title.
+    > 3. If heading have no id and no title , ignore it return undefined.
+
     * _Path_: The path of current heading, form top to current, start at 1.
     * _HeadingInfo_: The heading information of current heading.
-    
+
       ```typescript
       interface HeadingInfo {
           // nullable, id in document element, default `Target.id`

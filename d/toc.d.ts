@@ -1,5 +1,6 @@
 //Type definitions for toc.js
 //Project: toc.js
+//Version: 0.1.0
 //Definitions by: leisn, https://leisn.com
 
 declare namespace tocjs {
@@ -84,19 +85,31 @@ declare namespace tocjs {
     }
 
     /**
-     * Make toc element,
-     * place in 'containerId', search heading scope in 'cssSelector'.
-     * @param options containerId or options put in object (undefined | { containerId:"", cssSelector:""}).
-     * @param cssSelector  Query scope for search headings (undefined | string).
-     * @returns Toc Element when no containerId, otherwise void.
-     * @throws Throw an error when given 'containerId' and cannot find it.
+     * Callback after make toc.
      */
-    export function make(options?: string | object, cssSelector?: string): HTMLElement | void;
+    export interface MakeCallBack {
+        /**
+         * @param {typeof tocjs}  tocjs - the global tocjs
+         * @param {HTMLElement| undefined} toc - Generated toc element.
+         * @param {TocOptions} options - The options used to generate.
+         */
+        (this: typeof tocjs, toc: HTMLElement | undefined, options: TocOptions): void;
+    }
+
+    /**
+     * Make toc element.
+     * @param {string | undefined} containerId - Where to place, pass `undefined` if don't want to auto place.
+     * @param {string | undefined} cssSelector - Special scope where to search headings, default `document`.
+     * @param {MakeCallBack} callback - Call back after make toc.
+     * @returns {typeof tocjs} tocjs itself
+     */
+    export function make(containerId ?: string, cssSelector ?: string, callback ?: MakeCallBack): typeof tocjs;
 
     /**
      * Use given options to generate toc.
-     * @param options {TocOptions} { TocTag: "nav", TocId?, TocClass?, ulClass?, liClass?, aClass?, HeadingGenerator? }
-     * @returns tocjs itself
+     * @param {TocOptions} options -
+     *      { TocTag:"nav", TocId?, TocClass?, ulClass?, liClass?, aClass?, HeadingGenerator? };
+     * @returns {typeof tocjs} tocjs itself
      */
     export function use(options: TocOptions): typeof tocjs;
 }

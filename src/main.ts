@@ -1,38 +1,50 @@
 import { Toc, TocOptions } from "./lib/Toc";
 
+/**
+ * Callback after make toc.
+ */
+export interface MakeCallBack {
+    /**
+     * @param {typeof tocjs}  tocjs - the global tocjs
+     * @param {HTMLElement| undefined} toc - Generated toc element.
+     * @param {TocOptions} options - The options used to generate.
+     */
+    (this: typeof tocjs, toc: HTMLElement | undefined, options: TocOptions): void;
+}
+
 const handle = new Toc();
 
 /**
- * Make toc element, 
- * place in 'containerId', search heading scope in 'cssSelector'.
- * @param options undefined | ( 'containerId', 'cssSelector') | { containerId:"", cssSelector:""} 
- * @returns Toc Element when no containerId, otherwise void.
- * @throws Throw an error when given 'containerId' and cannot find it.
+ * Make toc element.
+ * @param {string | undefined} containerId - Where to place, pass `undefined` if don't want to auto place.
+ * @param {string | undefined} cssSelector - Special scope where to search headings, default `document`.
+ * @param {MakeCallBack} callback - Call back after make toc.
+ * @returns {typeof tocjs} tocjs itself
  */
-function make(options: any): HTMLElement | void {
-    let containerId = undefined;
-    let cssSelector = undefined;
+function make(containerId?: string, cssSelector?: string, callback?: MakeCallBack): typeof tocjs {
 
-    if (typeof options === 'object') {
-        containerId = options.containerId;
-        cssSelector = options.cssSelector;
-    } else if (typeof options === 'string')
-        containerId = arguments[0];
+    var toc = handle.Make(cssSelector);
 
-    if (arguments.length > 1)
-        cssSelector = arguments[1];
+    if (containerId && toc) {
+        var contaniner = document.getElementById(containerId);
+        if (contaniner)
+            contaniner.appendChild(toc);
+    }
 
-    return handle.Make(containerId, cssSelector);
+    if (callback)
+        callback.call(tocjs, toc, handle.Options);
+
+    return tocjs;
 }
 
 /**
  * Use given options to generate toc.
- * @param options
- * object { TocTag:"nav", TocId?, TocClass?, ulClass?, liClass?, aClass?, HeadingGenerator? }
- * @returns tocjs itself
+ * @param {TocOptions} options -
+ *      { TocTag:"nav", TocId?, TocClass?, ulClass?, liClass?, aClass?, HeadingGenerator? }; 
+ * @returns {typeof tocjs} tocjs itself
  */
 function use(options: TocOptions): typeof tocjs {
-    handle.Use(options);
+    handle.Set(options);
     return tocjs;
 }
 

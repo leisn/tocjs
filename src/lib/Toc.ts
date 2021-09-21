@@ -1,7 +1,18 @@
-import LevelNode from "./LevelNode";
-import StringBuilder from "./StringBuilder";
+import LevelNode from './LevelNode';
+import StringBuilder from './StringBuilder';
 
-const headingTags = ['#', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
+
+export interface TocOptions {
+    TocTag: string;
+    TocId?: string;
+    TocClass?: string;
+
+    ulClass?: string;
+    liClass?: string;
+    aClass?: string;
+
+    HeadingGenerator?(headingInfo: HeadingInfo, Path: number[]): GenerateResult | undefined;
+}
 
 export interface GenerateResult {
     Id: string; //must have id
@@ -15,6 +26,7 @@ export interface HeadingInfo {
     Target: HTMLElement;
 }
 
+const headingTags = ['#', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
 class Heading implements HeadingInfo {
     Id?: string;
     Title?: string;
@@ -24,18 +36,6 @@ class Heading implements HeadingInfo {
         this.Title = title;
         this.Target = target;
     }
-}
-
-export interface TocOptions {
-    TocTag: string;
-    TocId?: string;
-    TocClass?: string;
-
-    ulClass?: string;
-    liClass?: string;
-    aClass?: string;
-
-    HeadingGenerator?(headingInfo: HeadingInfo, Path: number[]): GenerateResult | undefined;
 }
 
 export class Toc {
@@ -50,12 +50,12 @@ export class Toc {
         this._root = new LevelNode<Heading>(0);
     }
 
-    Use(options?: TocOptions): Toc {
+    Set(options: TocOptions): Toc {
         this.Options = Object.assign(this.Options, options);
         return this;
     }
 
-    Make(containerId?: string, cssSelector?: string): HTMLElement | void {
+    Make(cssSelector?: string): HTMLElement | undefined {
         try {
             if (cssSelector) {
                 let blocks = document.querySelectorAll(cssSelector);
@@ -72,32 +72,23 @@ export class Toc {
                 this._generateHeadingId(this._root);
 
             let toc = document.createElement(this.Options.TocTag);
-
-            if (containerId) {
-                let contaniner = document.getElementById(containerId);
-                if (!contaniner)
-                    throw ("Cannot find contaniner element by id: " + containerId);
-                contaniner.appendChild(toc);
-            }
-            if (this.Options.TocId)
-                toc.id = this.Options.TocId;
-            if (this.Options.TocClass) {
-                let classes = toc.className;
-                if (classes && classes.length > 0)
-                    classes += " " + this.Options.TocClass;
-                else
-                    classes = this.Options.TocClass;
-                toc.className = classes;
+            {
+                if (this.Options.TocId)
+                    toc.id = this.Options.TocId;
+                if (this.Options.TocClass) {
+                    let classes = toc.className;
+                    if (classes && classes.length > 0)
+                        classes += " " + this.Options.TocClass;
+                    else
+                        classes = this.Options.TocClass;
+                    toc.className = classes;
+                }
             }
             var stringBuilder = new StringBuilder();
-            var result = this._toHtml(this._root, stringBuilder);
-            if (result)
-                toc.innerHTML = result;
+            toc.innerHTML = this._toHtml(this._root, stringBuilder)!;
             stringBuilder.Clear();
             return toc;
 
-        } catch (error) {
-            throw error;
         } finally {
             this._root.Clear();
         }
@@ -128,7 +119,7 @@ export class Toc {
     //     and not change title in heading
     //  if heading have no id but title , generate id with the title
     //  if heading have no id and no title return undefined
-    private _defaultGenerateHeading(info: HeadingInfo, path: number[]): GenerateResult | undefined {
+    private _defaultGenerateHeading(info: HeadingInfo, _: number[]): GenerateResult | undefined {
         let id = info.Id;
         let title = info.Title;
         let titleInToc = title;
