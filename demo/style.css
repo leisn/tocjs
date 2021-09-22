@@ -64,7 +64,6 @@ h6 {
     margin-bottom: .5rem;
     font-weight: 500;
     line-height: 1.2;
-    font-weight: 500;
     padding-top: 20px;
 }
 
@@ -110,13 +109,14 @@ p {
     background-color: beige;
     margin-bottom: 0;
     padding-top: .8em;
-    ;
 }
 
 .toc {
     padding-top: .5rem;
     display: block;
     background-color: beige;
+    position: sticky;
+    top: 0;
 }
 
 .toc-list {
@@ -188,5 +188,14 @@ p {
 
 .custom .toc>.toc-list>li>.toc-list {
     padding-left: 1em;
-    ;
+}
+
+.active {
+    background-color: rgb(187, 200, 240);
+}
+
+.current {
+    border-left: 5px solid #03a7dd;
+    background-color: rgb(187, 200, 240);
+    border-right: 5px solid #03a7dd;
 }

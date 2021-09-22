@@ -112,7 +112,7 @@
 
                     return { Id: id, TitleInToc: titleInToc, TitleInHeading: titleInHead };
                 }
-            }).make('toc-container', 'article.toc-scope');
+            }).useWatchScroll('current','active').make('toc-container', 'article.toc-scope');
         </script>
 </body>
 

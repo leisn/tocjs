@@ -6,6 +6,13 @@ const nowYear = new Date().getFullYear();
 const copyright = "Copyright (c) 2021" +
     (nowYear > 2021 ? `-${nowYear}` : "") + " Leisn";
 
+const banner = "/*!\n" +
+    `  Toc.js v${meta.version}\n` +
+    `  ${copyright}\n` +
+    `  License: ${meta.license}\n` +
+    `  [tocjs](${meta.homepage})\n` +
+    "*/";
+
 const config = {
     input: 'src/main.ts',
     output: {
@@ -14,12 +21,7 @@ const config = {
         format: "iife",
         footer: "/*! Thanks for use tocjs.*/",
         interop: false,
-        banner: "/*!\n" +
-            `  Toc.js v${meta.version}\n` +
-            `  ${copyright}\n` +
-            `  License: ${meta.license}\n` +
-            `  [tocjs](${meta.homepage})\n` +
-            "*/"
+        banner: banner + "\n/**tocjs global*/"
     },
     plugins: [
         typescript({ tsconfig: './tsconfig.build.json' })
@@ -30,7 +32,7 @@ exports.default = [config, {
     ...config,
     output: {
         ...config.output,
-        banner: config.output.banner.split(/\n/g).join(' | ').replace(/\s{2,}/g, ' '),
+        banner: banner.split(/\n/g).join(' | ').replace(/\s{2,}/g, ' '),
         file: 'dist/toc.min.js'
     },
     plugins: [
